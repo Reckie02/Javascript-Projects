@@ -1,0 +1,85 @@
+/* #c8b89a
+   #bd9a73
+   #a58a5b
+   #90764a
+   #9f8567
+ */
+:root{
+  --default-font: "playfair";
+  --heading-font: "Playfair Display",  sans-serif;
+  --nav-font: "playfair";
+}
+ 
+ :root {
+    --background-color: #1f1f1f;
+    --default-color: #fde9ce;
+    --header-color: #90764a;
+    --accent-color: #c8b89a;
+    --surface-color:#bd9a73;
+    --contrast-color: #9f8567;
+    --add-color:#a58a5b;
+
+ }
+
+ h1,h2,h3,h4,h4,h6{
+
+ }
+ body{
+    background-color: var(--background-color);
+    margin: 12%;
+    color: #fde9ce;
+ }
+ .display{
+    width: 50%;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    background: #fde9ce;
+    color:var(--default-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 10px;
+    border-radius: 5px;
+ }
+ .container h1{
+    font-weight: 500px;
+    font-size: 45px;
+    color: #90764a;
+ }
+ .container h1 span{
+    color:var(--default-color);
+    border-bottom: 4px solid #fde9ce;
+    padding-bottom: 7px;
+ }
+ .display img{
+    width: 30px;
+    cursor: pointer;
+
+ }
+ .display input{
+    border: 0;
+    outline: 0;
+    font-size: 24px;
+    background-color: #fde9ce;
+    color: #1f1f1f;
+ }
+ .container button img{
+    width: 28px;
+    margin: 0;
+ }
+
+ .container button{
+    border: 0;
+    outline:0;
+    background: var(--contrast-color);
+    color: var(--default-color);
+    font-size: 22px;
+    font-weight: 300;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    padding: 16px 26px;
+    border-radius: 5px;
+    cursor: pointer;
+
+ }
