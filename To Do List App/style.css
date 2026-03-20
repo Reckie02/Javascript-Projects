@@ -33,12 +33,12 @@
     padding: 10px;
  }
  .todo-app{
-    width: 100%;
+    width: 90%;
     max-width: 800px;
     background: #1f1f1f;
-    margin: 100px auto 20px;
+    margin: 20px auto 20px;
     border-radius: 20px;
-    padding: 40px 30px 70px;
+    padding: 40px;
  }
  .todo-app h2{
     color: var(--default-color);
@@ -59,6 +59,9 @@
     padding-left: 20px;
     margin-bottom: 25px;
 }
+.col-date{
+   margin: 20px 0px;
+}
 
 input{
     flex: 1;
@@ -71,6 +74,7 @@ input{
     padding: 10px;
     font-weight: 500;
     border-radius: 20px;
+    margin-left: 20px;
  }
  button{
      color: #1f1f1f;
@@ -82,6 +86,7 @@ input{
     background-color: #fde9ce;
     border-radius: 20px;
     cursor: pointer;
+    margin-left: 20px;
 
  }
  ul li{
@@ -134,7 +139,7 @@ ul li::before{
     color: #1f1f1f;
  }
  .clear{
-    margin-left: 30%;
+    margin: 30px auto;
  }
  .clear:hover{
     background-color: #9f8567;

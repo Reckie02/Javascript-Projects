@@ -14,7 +14,7 @@ function addTask(){
     }
     else{
         let li = document.createElement("li");
-        li.innerHTML = inputBox.value + " -|- " + taskDate.value + " -|- " + taskTime.value;
+        li.innerHTML = inputBox.value + " ------ " + taskDate.value + " ------ " + taskTime.value;
         listContainer.appendChild(li);
         let span = document.createElement("span");
         span.innerHTML = "\u00d7";
