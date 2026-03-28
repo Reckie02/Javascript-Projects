@@ -98,12 +98,12 @@
  }
  .quote-box button:hover{
    color: #1f1f1f;
-   background: #bd9a73;
+   background: #fde9ce;
    transform: scale(1.2);
  }
-.quote-box button img{
+.quote-box button i{
    width: 20px;
-   margin-right: 10px;
+   margin: 2px;
 }
 
 .quote-box button:nth-child(2){
