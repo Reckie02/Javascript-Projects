@@ -1,13 +1,27 @@
 const quote = document.getElementById("quote");
 const author = document.getElementById("author");
-const api_url = "https://api.quotable.io/random";
+const api_url = "https://api.api-ninjas.com/v2/randomquotes?category=all";
 
 async function getquote(url) {
-    const response = await fetch(url);
-    var data = await response.json();
-    
-    quote.innerHTML = data.content;
-    author.innerHTML = data.author;
+    try {
+        const response = await fetch(url, {
+            headers: {
+                "X-Api-Key": "XtayU3o8cFfWAFLz3yXpxbtbx4xO0xDVuN4Brxh3"
+            }
+        });
+
+        const data = await response.json();
+
+        console.log(data); // debug
+
+        quote.innerHTML = data[0].quote;
+        author.innerHTML = data[0].author;
+
+    } catch (error) {
+        quote.innerHTML = "Failed to load quote.";
+        author.innerHTML = "";
+        console.error(error);
+    }
 }
 getquote(api_url)
 function tweet(){
