@@ -63,15 +63,15 @@
  .display input{
     border: 0;
     outline: 0;
-    font-size: 24px;
+    font-size: 20px;
     background-color: #fde9ce;
     color: #1f1f1f;
     padding: 10px;
-     width: 100%;
+     width: 80%;
  }
  .container button img{
     width: 28px;
-    margin: 0;
+    margin: 2px;
  }
 
  .container button{
@@ -79,7 +79,7 @@
     outline:0;
     background: var(--contrast-color);
     color: var(--default-color);
-    font-size: 22px;
+    font-size: 18px;
     font-weight: 300;
     display: flex;
     align-items: center;
