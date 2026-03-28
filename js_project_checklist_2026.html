@@ -1,0 +1,193 @@
+
+<style>
+* { box-sizing: border-box; }
+body { margin: 0; }
+.phase { margin-bottom: 1.5rem; }
+.phase-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 10px; padding-bottom: 8px;
+  border-bottom: 0.5px solid var(--color-border-tertiary);
+}
+.phase-pill {
+  font-size: 11px; font-weight: 500; padding: 3px 10px;
+  border-radius: 99px; white-space: nowrap;
+}
+.phase-title { font-size: 15px; font-weight: 500; color: var(--color-text-primary); flex: 1; }
+.phase-count { font-size: 12px; color: var(--color-text-tertiary); }
+.projects { display: flex; flex-direction: column; gap: 6px; }
+.project {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px;
+  background: var(--color-background-primary);
+  border: 0.5px solid var(--color-border-tertiary);
+  border-radius: var(--border-radius-md);
+  cursor: pointer; transition: border-color 0.15s;
+}
+.project:hover { border-color: var(--color-border-secondary); }
+.project.done { opacity: 0.5; }
+.project.done .proj-name { text-decoration: line-through; }
+.cb {
+  width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; margin-top: 1px;
+  border: 1.5px solid var(--color-border-secondary);
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+}
+.cb.checked { border-color: transparent; }
+.cb svg { display: none; }
+.cb.checked svg { display: block; }
+.proj-body { flex: 1; min-width: 0; }
+.proj-name { font-size: 13px; font-weight: 500; color: var(--color-text-primary); margin: 0 0 2px; }
+.proj-desc { font-size: 12px; color: var(--color-text-secondary); margin: 0; line-height: 1.4; }
+.proj-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+.tag {
+  font-size: 11px; padding: 2px 7px; border-radius: 99px;
+  border: 0.5px solid var(--color-border-tertiary);
+  color: var(--color-text-secondary);
+}
+.ask-btn {
+  font-size: 11px; padding: 3px 8px; border-radius: var(--border-radius-md);
+  border: 0.5px solid var(--color-border-secondary);
+  background: transparent; color: var(--color-text-secondary);
+  cursor: pointer; white-space: nowrap; flex-shrink: 0; margin-top: 1px;
+  transition: background 0.1s;
+}
+.ask-btn:hover { background: var(--color-background-secondary); }
+.progress-bar-wrap {
+  height: 4px; background: var(--color-background-secondary);
+  border-radius: 99px; overflow: hidden; margin-bottom: 1.25rem;
+}
+.progress-bar { height: 100%; border-radius: 99px; transition: width 0.3s; background: #534AB7; }
+.summary { display: flex; gap: 12px; margin-bottom: 1.25rem; }
+.stat {
+  flex: 1; padding: 10px 12px;
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-md); text-align: center;
+}
+.stat-n { font-size: 22px; font-weight: 500; color: var(--color-text-primary); }
+.stat-l { font-size: 11px; color: var(--color-text-tertiary); margin-top: 2px; }
+</style>
+
+<div style="padding: 1rem 0 0;">
+  <div class="summary">
+    <div class="stat"><div class="stat-n" id="s-done">0</div><div class="stat-l">done</div></div>
+    <div class="stat"><div class="stat-n" id="s-left">20</div><div class="stat-l">remaining</div></div>
+    <div class="stat"><div class="stat-n" id="s-pct">0%</div><div class="stat-l">complete</div></div>
+  </div>
+  <div class="progress-bar-wrap"><div class="progress-bar" id="prog" style="width:0%"></div></div>
+  <div id="phases"></div>
+</div>
+
+<script>
+const PHASES = [
+  {
+    id: "foundations",
+    label: "Phase 1", title: "Foundations",
+    color: "#534AB7", bg: "#EEEDFE", textColor: "#3C3489",
+    projects: [
+      { id:"p1", name:"Interactive quiz app", desc:"Build a timed quiz with score tracking. Covers DOM manipulation, events, arrays, and control flow.", tags:["DOM","arrays","events"], prompt:"Help me build a JavaScript quiz app with timer and score tracking" },
+      { id:"p2", name:"Tip calculator", desc:"A form-driven UI that computes split bills. Practice input handling, math operators, and string formatting.", tags:["forms","operators","strings"], prompt:"Help me build a tip calculator app in vanilla JavaScript" },
+      { id:"p3", name:"To-do list with filters", desc:"Add, complete, delete, and filter tasks. Touch localStorage, DOM updates, and error boundaries.", tags:["DOM","localStorage","closures"], prompt:"Help me build a to-do list app in vanilla JS with filter tabs" },
+    ]
+  },
+  {
+    id: "corejs",
+    label: "Phase 2", title: "Core JS",
+    color: "#185FA5", bg: "#E6F1FB", textColor: "#0C447C",
+    projects: [
+      { id:"p4", name:"Event emitter class", desc:"Build a pub/sub class from scratch using prototypes. Mimics Node's EventEmitter.", tags:["classes","prototypes","this"], prompt:"Help me build a JavaScript EventEmitter class from scratch" },
+      { id:"p5", name:"Promise-based fetch wrapper", desc:"Write a reusable fetch utility with retries, timeouts, and error handling. Exposes the event loop.", tags:["promises","async","event loop"], prompt:"Help me build a fetch wrapper with retry and timeout logic in JavaScript" },
+      { id:"p6", name:"Functional utilities library", desc:"Implement pipe, compose, curry, and memoize. Pure functions, no side effects.", tags:["higher-order fns","closures","FP"], prompt:"Help me implement pipe, compose, curry, and memoize in JavaScript" },
+      { id:"p7", name:"Module bundler (toy)", desc:"Parse import/export statements and stitch files together. Deepens ES module and AST understanding.", tags:["modules","Node.js","parsing"], prompt:"Help me build a toy JavaScript module bundler in Node.js" },
+      { id:"p8", name:"TypeScript typed API client", desc:"Wrap a public REST API (e.g. GitHub) with full TypeScript types, generics, and error discriminants.", tags:["TypeScript","generics","fetch"], prompt:"Help me build a TypeScript-typed GitHub API client with error handling" },
+    ]
+  },
+  {
+    id: "modern",
+    label: "Phase 3", title: "Modern JS",
+    color: "#0F6E56", bg: "#E1F5EE", textColor: "#085041",
+    projects: [
+      { id:"p9", name:"Weather dashboard", desc:"Fetch live data, handle loading and error states, display charts. Full async/await + Fetch + AbortController.", tags:["async/await","fetch","error states"], prompt:"Help me build a weather dashboard with async fetch and error handling in JavaScript" },
+      { id:"p10", name:"Markdown note-taking app", desc:"Save notes to localStorage, parse markdown to HTML, add search. Tests storage + tooling + security (sanitisation).", tags:["localStorage","security","tooling"], prompt:"Help me build a markdown note-taking app in vanilla JS with localStorage" },
+      { id:"p11", name:"Unit-tested utility belt", desc:"Write 10+ utility functions (debounce, throttle, deep clone) and cover each with Vitest tests.", tags:["testing","Vitest","pure fns"], prompt:"Help me build a utility library with Vitest unit tests in JavaScript" },
+      { id:"p12", name:"Proxy-powered reactive store", desc:"Use Proxy to build a mini state manager that re-renders on mutation. Explore meta-programming.", tags:["Proxy","reactive","state"], prompt:"Help me build a reactive state store using JavaScript Proxy" },
+      { id:"p13", name:"Drag-and-drop Kanban board", desc:"Mouse/touch events, DOM ordering, and optimistic UI updates. Performance and event delegation practice.", tags:["events","performance","DOM"], prompt:"Help me build a drag-and-drop kanban board in vanilla JavaScript" },
+    ]
+  },
+  {
+    id: "advanced",
+    label: "Phase 4", title: "Advanced",
+    color: "#854F0B", bg: "#FAEEDA", textColor: "#633806",
+    projects: [
+      { id:"p14", name:"Image processing worker", desc:"Offload pixel manipulation (blur, greyscale) to a Web Worker and show progress in the UI thread.", tags:["Web Workers","performance","canvas"], prompt:"Help me build an image processor using Web Workers in JavaScript" },
+      { id:"p15", name:"Real-time chat with WebSockets", desc:"Node.js server + browser client. Handle reconnection, presence, and message history.", tags:["WebSockets","Node.js","real-time"], prompt:"Help me build a real-time chat app with WebSockets in Node.js" },
+      { id:"p16", name:"PWA with offline mode", desc:"Add a Service Worker to any existing project. Implement cache-first strategy and background sync.", tags:["Service Workers","PWA","caching"], prompt:"Help me add a Service Worker and offline mode to a JavaScript app" },
+      { id:"p17", name:"Wasm image filter", desc:"Compile a simple Rust/C filter to WebAssembly and call it from JavaScript. Learn the interop boundary.", tags:["WebAssembly","performance","Wasm"], prompt:"Help me build a WebAssembly image filter and call it from JavaScript" },
+      { id:"p18", name:"AI chat interface", desc:"Stream responses from an LLM API, handle tool calls, and manage conversation history in state.", tags:["AI/LLM","streaming","async"], prompt:"Help me build a streaming AI chat interface using the Anthropic API in JavaScript" },
+      { id:"p19", name:"Memory leak debugger", desc:"Intentionally leak memory in various patterns, then use DevTools to detect and fix each one.", tags:["memory","WeakRef","GC","debugging"], prompt:"Help me learn to detect and fix JavaScript memory leaks using DevTools" },
+      { id:"p20", name:"Mini signals library", desc:"Implement reactive signals (like SolidJS) from scratch: signal, computed, and effect primitives.", tags:["signals","reactive","advanced"], prompt:"Help me implement a reactive signals system from scratch in JavaScript" },
+    ]
+  }
+];
+
+const state = JSON.parse(localStorage.getItem('js-checklist-2026') || '{}');
+
+function save() { localStorage.setItem('js-checklist-2026', JSON.stringify(state)); }
+
+function updateStats() {
+  const total = PHASES.reduce((a,p) => a + p.projects.length, 0);
+  const done = Object.values(state).filter(Boolean).length;
+  document.getElementById('s-done').textContent = done;
+  document.getElementById('s-left').textContent = total - done;
+  document.getElementById('s-pct').textContent = Math.round(done/total*100) + '%';
+  document.getElementById('prog').style.width = Math.round(done/total*100) + '%';
+  PHASES.forEach(ph => {
+    const el = document.getElementById('count-'+ph.id);
+    if (!el) return;
+    const done = ph.projects.filter(p => state[p.id]).length;
+    el.textContent = done + '/' + ph.projects.length;
+  });
+}
+
+function toggle(id) {
+  state[id] = !state[id];
+  save();
+  const proj = document.getElementById('proj-'+id);
+  const cb = document.getElementById('cb-'+id);
+  proj.classList.toggle('done', state[id]);
+  cb.classList.toggle('checked', state[id]);
+  updateStats();
+}
+
+const container = document.getElementById('phases');
+PHASES.forEach(ph => {
+  const div = document.createElement('div');
+  div.className = 'phase';
+  div.innerHTML = `
+    <div class="phase-header">
+      <span class="phase-pill" style="background:${ph.bg};color:${ph.textColor}">${ph.label}</span>
+      <span class="phase-title">${ph.title}</span>
+      <span class="phase-count" id="count-${ph.id}">0/${ph.projects.length}</span>
+    </div>
+    <div class="projects">
+      ${ph.projects.map(p => `
+        <div class="project${state[p.id]?' done':''}" id="proj-${p.id}" onclick="toggle('${p.id}')">
+          <div class="cb${state[p.id]?' checked':''}" id="cb-${p.id}">
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+              <path d="M1 4L3.5 6.5L9 1" stroke="${ph.color}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="proj-body">
+            <div class="proj-name">${p.name}</div>
+            <div class="proj-desc">${p.desc}</div>
+            <div class="proj-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <button class="ask-btn" onclick="event.stopPropagation();sendPrompt('${p.prompt}')">Start ↗</button>
+        </div>
+      `).join('')}
+    </div>
+  `;
+  container.appendChild(div);
+});
+
+updateStats();
+</script>

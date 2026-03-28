@@ -29,6 +29,12 @@
     margin: 12%;
     color: #fde9ce;
  }
+ .loading {
+    display: none;
+    text-align: center;
+    margin-top: 10px;
+}
+
  .card{
     width: 90%;
     max-width: 470px;
@@ -38,6 +44,11 @@
     border-radius: 20px;
     padding: 40px 35px;
     text-align: center;
+ }
+ .date{
+    font-family: var(--nav-font);
+    font-size: 18px;
+    margin-bottom: 20px;
  }
  .search{
     width: 100%;
@@ -76,7 +87,7 @@
 
  .weather-icon{
     width: 170px;
-    margin-top: 30px;
+    margin-top: 10px;
  }
  .weather h1{
     font-size: 40px;
@@ -91,8 +102,7 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding:0 20px;
-    margin-bottom: 50px;
+    padding: 0;
  }
  .col{
     display: flex;
@@ -101,12 +111,16 @@
  }
 
  .col img{
-    width:40px;
+    width:30px;
     margin-right: 10px;
+ }
+ .col p{
+      font-size: 15px;
+    margin: 10px;
  }
  .humidity, .wind{
     font-size: 28px;
-    margin-top: -6px;
+    margin:0 6px;
  }
  .weather{
     display: none;
